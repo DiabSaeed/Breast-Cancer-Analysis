@@ -28,9 +28,9 @@ X_train_1, X_test_1, y_train_1, y_test_1 = train_test_split(X_1, y_1, test_size=
 smote = SMOTE(n_jobs=-1,random_state=42)
 X_resample_1,Y_resample_1 = smote.fit_resample(X_train_1,y_train_1)
 # Train a Random Forest for Model 1
-model_1 = XGBClassifier(learning_rate=1.0,max_depth=6,n_estimators=150,random_state=42)
-model_1.fit(X_resample_1,Y_resample_1)
-y_pred_1 = model_1.predict(X_test_1)
+survival_peridiction_model = XGBClassifier(learning_rate=1.0,max_depth=6,n_estimators=150,random_state=42)
+survival_peridiction_model.fit(X_resample_1,Y_resample_1)
+y_pred_1 = survival_peridiction_model.predict(X_test_1)
 
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
@@ -96,7 +96,7 @@ def make_predictions(n_clicks, age, gender, protein1, protein2, protein3, protei
     features = np.array([[age, gender, protein1, protein2, protein3, protein4, er_status, pr_status, her2_status]])
     
     # Predict patient status (Alive or Dead) using Model 1
-    status_pred = model_1.predict(features)[0]
+    status_pred = survival_peridiction_model.predict(features)[0]
     status = 'Alive' if status_pred == 1 else 'Dead' 
     # Display predictions
     return html.Div([
